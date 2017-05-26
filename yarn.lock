@@ -572,7 +572,7 @@ babel-types@^6.19.0, babel-types@^6.24.1:
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
-babylon@^6.11.0, babylon@^6.15.0, babylon@^6.17.1:
+babylon@^6.11.0, babylon@^6.15.0:
   version "6.17.1"
   resolved "http://registry.npm.taobao.org/babylon/download/babylon-6.17.1.tgz#17f14fddf361b695981fe679385e4f1c01ebd86f"
 
@@ -852,6 +852,12 @@ magic-string@^0.14.0:
 magic-string@^0.19.0:
   version "0.19.1"
   resolved "http://registry.npm.taobao.org/magic-string/download/magic-string-0.19.1.tgz#14d768013caf2ec8fdea16a49af82fc377e75201"
+  dependencies:
+    vlq "^0.2.1"
+
+magic-string@^0.20.0:
+  version "0.20.0"
+  resolved "http://registry.npm.taobao.org/magic-string/download/magic-string-0.20.0.tgz#255f07e0b1459dc00d74636367e9200cbb5d529d"
   dependencies:
     vlq "^0.2.1"
 

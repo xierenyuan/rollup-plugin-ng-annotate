@@ -3,8 +3,23 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var rollupPluginutils = require('rollup-pluginutils');
-var ngAnnotate = _interopDefault(require('ng-annotate'));
 var assign = _interopDefault(require('lodash.assign'));
+var ngAnnotate = _interopDefault(require('ng-annotate'));
+
+function Parse(code) {
+  var source = code;
+  try {
+    var ref = ngAnnotate(code, { add: true });
+    var src = ref.src;
+    var map = ref.map;
+    if (src) {
+       source = src;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return source
+}
 
 var DEFAULT_CONFIG = {
   // ngAnnotate 配置 see https://github.com/olov/ng-annotate
@@ -20,18 +35,9 @@ function ng1(options) {
 
   return {
     name: 'ngAnnotate',
-    transform: function transform(code, id) {
-      if(!filter(id)){
-        return
-      }
-      console.log('sourece ...................................', code);
-      var ref = ngAnnotate(code, { add: true });
-      var src = ref.src;
-      var map = ref.map;
-      var a = src || '失败';
-      console.log(("ngAnnotate .................................. " + a));
+    transformBundle: function transformBundle(source){
       return {
-        code: src || code,
+        code: Parse(source),
         map: { mappings: '' }
       }
     }

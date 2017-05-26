@@ -7,6 +7,7 @@ export default {
   format: 'cjs',
   entry: resolve(__dirname, './test.es6.js'),
   dest: resolve(__dirname, './dist/index.js'),
+  sourceMap: true,
   plugins: [
     babel({
        exclude: 'node_modules/**'

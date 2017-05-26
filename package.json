@@ -1,6 +1,6 @@
 {
-  "name": "rollup-pulgin-ng-annotate",
-  "version": "1.0.1",
+  "name": "rollup-pulgin-ng1-annotate",
+  "version": "1.0.3",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
@@ -9,6 +9,7 @@
     "dev": "rollup --config examples/rollup.config.js",
     "build": "rollup -c -f cjs -o dist/index.cjs.js && rollup -c -f es -o dist/index.es.js"
   },
+  "homepage": "https://github.com/xierenyuan/rollup-plugin-ng-annotate",
   "license": "MIT",
   "author": "renhong <xierenyuan@qq.com>",
   "devDependencies": {

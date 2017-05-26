@@ -1,7 +1,5 @@
 # rollup-pulgin-ng1-annotate
 
-> 因为 rollup-pulgin-ng-annotate 插件以存在 因此改名为 rollup-pulgin-ng1-annotate
-
 > 解决 angularjs 1 的依赖注入 在 es6 和 普通的代码的可以使用  Add angularjs dependency injection annotations with ng-annotate
 
 ## Install

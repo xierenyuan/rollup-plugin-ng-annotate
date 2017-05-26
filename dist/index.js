@@ -12,7 +12,7 @@ var DEFAULT_CONFIG = {
     add: true
   }
 };
-function ng1Annotate(options) {
+function ng1(options) {
   if ( options === void 0 ) options = DEFAULT_CONFIG;
 
   options = assign(DEFAULT_CONFIG, options);
@@ -24,16 +24,18 @@ function ng1Annotate(options) {
       if(!filter(id)){
         return
       }
-      console.log(code);
+      console.log('sourece ...................................', code);
       var ref = ngAnnotate(code, { add: true });
       var src = ref.src;
       var map = ref.map;
+      var a = src || '失败';
+      console.log(("ngAnnotate .................................. " + a));
       return {
-        code: src,
+        code: src || code,
         map: { mappings: '' }
       }
     }
   }
 }
 
-module.exports = ng1Annotate;
+module.exports = ng1;

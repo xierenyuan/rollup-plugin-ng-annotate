@@ -3,8 +3,23 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var rollupPluginutils = require('rollup-pluginutils');
-var ngAnnotate = _interopDefault(require('ng-annotate'));
 var assign = _interopDefault(require('lodash.assign'));
+var ngAnnotate = _interopDefault(require('ng-annotate'));
+
+function Parse(code) {
+  var source = code;
+  try {
+    var ref = ngAnnotate(code, { add: true });
+    var src = ref.src;
+    var map = ref.map;
+    if (src) {
+       source = src;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return source
+}
 
 var DEFAULT_CONFIG = {
   // ngAnnotate 配置 see https://github.com/olov/ng-annotate
@@ -12,27 +27,21 @@ var DEFAULT_CONFIG = {
     add: true
   }
 };
-function ngAnnotate$1(options) {
+function ng1(options) {
   if ( options === void 0 ) options = DEFAULT_CONFIG;
 
   options = assign(DEFAULT_CONFIG, options);
-  var filter = rollupPluginutils.createFilter(options.include || '**/*.vue', options.exclude);
+  var filter = rollupPluginutils.createFilter(options.include || '**/*.js', options.exclude);
 
   return {
     name: 'ngAnnotate',
-    transform: function transform(code, id) {
-      if(!filter(id)){
-        return
-      }
-      var ref = ngAnnotate$1(code, { add: true });
-      var src = ref.src;
-      var map = ref.map;
+    transformBundle: function transformBundle(source){
       return {
-        code: src,
+        code: Parse(source),
         map: { mappings: '' }
       }
     }
   }
 }
 
-module.exports = ngAnnotate$1;
+module.exports = ng1;

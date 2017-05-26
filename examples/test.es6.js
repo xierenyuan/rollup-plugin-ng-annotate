@@ -1,68 +1,10 @@
-import DialogCtrl from './dialog.controller';
-import temp from './hello.dailog.html';
+'use strict'
+import A from './1.es6.js'
 class HelloCtrl {
+    /*@ngInject*/
     constructor($scope, HelloAccount, $rcTableDelegate, $rcModal) {
-        'ngInject';
-        this.name = 'hello word hahaha';
-        this._HelloAccount = HelloAccount;
-        this._$rcTableDelegate = $rcTableDelegate;
-        this._$rcModal = $rcModal;
-        this.search = {
-            date: { startDate: moment(), endDate: moment() }
-        };
-        this.init();
-        this.dateConfig = {
-            locale: {
-                format: 'YYYY-MM'
-            }
-        };
-        //helloTable
-        $scope.onCloseA = () => {
-            console.log('呵呵哒', this.search.account_ids);
-        };
-
-        this.pageSize = 10;
-        this.list = [];
-        this.selected = [];
-
-        this.callServer = (tableState) => {
-            let { pagination: { start, number = 10 }, sort: { predicate, reverse }, search: { predicateObject } } = tableState;
-            let params = {};
-            params.size = number;
-            params.page = (start / number) + 1;
-            if (predicate) {
-                params.column = predicate;
-                params.sort = reverse ? 'desc' : 'asc';
-            }
-            Object.assign(params, this.search);
-            delete params.campaign_ids;
-            //筛选框值
-            if (angular.isObject(params.plan)) {
-                params.group_flag = params.plan.flag;
-                params.group_name = params.plan.name;
-                delete params.plan;
-            }
-            if (_.isObject(params.account_ids)) {
-                params.account_ids = params.account_ids.map(item => {
-                    return item.account_id;
-                });
-            }
-
-            // Unit.getList(params, { isMask: true }).then(res => {
-            //     let { code, data } = res;
-            //     if (code === 0) {
-            //         this.list = data || [];
-            //         //分页
-            //         Object.assign(params, { total: 1 });
-            //         Unit.getList(params, { isMask: false }).then(totalRes => {
-            //             let { code: pageCode, data: total } = totalRes;
-            //             if (pageCode === 0) {
-            //                 tableState.pagination.numberOfPages = Math.ceil(total / number);
-            //             }
-            //         });
-            //     }
-            // });
-        };
+      'ngInject';
+      $scope.a = ''
     }
 
     updateDate() {
@@ -85,23 +27,53 @@ class HelloCtrl {
         console.log(this.search);
         this._$rcTableDelegate.$getByHandle('helloTable').refresh('search');
     }
-
-    openDialog(item) {
-        console.log(item);
-        this._$rcModal.open({
-            templateUrl: temp,
-            controller: DialogCtrl,
-            resolve: {
-                aiRu: () => {
-                    return item;
-                }
-            }
-        }).then(res => {
-            console.log(res);
-        });
-    }
-
 }
 angular.module('rrc.page.helloWorld.hello', [])
     .controller('HelloCtrl', HelloCtrl)
+    .controller('ACtrl', A)
     .name;
+
+
+
+angular.module('starter.directives', [])
+
+
+//输出html string
+.directive('htmlString' , function(){
+  return function(scope , el , attr){
+    if(attr.htmlString){
+      scope.$watch(attr.htmlString , function(html){
+        el.html(html || '');//更新html内容
+      });
+    }
+  };
+})
+
+// 云采订货
+.directive('goCloud', function($state,$http,loading){
+  return {
+    link: function(scope, elem, attrs){
+      $(elem).click(function(){
+        loading.show();
+        // 判断是否授权过
+        $http.get(domain_cloud+'has/auth'+'?storeId='+localStorage.getItem('store_id'),{
+          }).then(function(res) {
+            if(res.data.code == 0 && res.data.data.hasAuth==1){
+              // 已授权 直接跳转至云采
+              window.location.href = 'cloud/www/index_app.html?'
+                                    +localStorage.getItem('store_id')+'/'
+                                    +localStorage.getItem('user_name');
+            }
+            else{
+              // 未授权 跳转至授权
+              $state.go('auth/cloud-buyer');
+            }
+          },function(err){
+
+          }).finally(function () {
+            loading.hide();
+          });
+        });
+      }
+    }
+  })
